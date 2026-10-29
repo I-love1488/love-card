@@ -46,6 +46,21 @@
       100% { transform: translateY(110vh) rotate(360deg); opacity: 0.5; }
     }
 
+    /* ================= ПЛАВАЮЩИЕ КАРТИНКИ НА ФОНЕ ================= */
+    .floating-pic {
+      position: absolute;
+      z-index: 0; /* Позади карточки с текстом, но поверх фона */
+      pointer-events: none;
+      opacity: 0.8;
+      /* Анимация плавания */
+      animation: floatAround ease-in-out infinite alternate;
+    }
+
+    @keyframes floatAround {
+      0% { transform: translateY(0) translateX(0) rotate(-5deg); }
+      100% { transform: translateY(-50px) translateX(30px) rotate(5deg); }
+    }
+
     /* ================= КАРТОЧКА С ТЕКСТОМ ================= */
     .card {
       background: rgba(255, 255, 255, 0.9);
@@ -65,7 +80,6 @@
       font-size: 28px;
       line-height: 1.4;
       font-weight: 800;
-      /* Переливающийся градиент для текста */
       background: linear-gradient(45deg, #ff1493, #ff8c00, #ff1493, #ff69b4);
       background-size: 300% 300%;
       -webkit-background-clip: text;
@@ -87,7 +101,6 @@
       line-height: 1.5;
     }
 
-    /* Анимация для сердечка внизу */
     .heart-beat {
       display: inline-block;
       font-size: 40px;
@@ -111,46 +124,61 @@
   </div>
 
   <script>
-    // Список эмодзи для падения
+    // ====== 1. ГЕНЕРАЦИЯ ПАДАЮЩИХ ДЕНЕГ И СМАЙЛИКОВ ======
     const emojis = ['💸', '💰', '💵', '💖', '✨', '😊', '🥰', '🌸', '🤑'];
-    const container = document.body;
+    const body = document.body;
 
-    // Функция создания падающего элемента
     function createFallingItem() {
       const el = document.createElement('div');
       el.classList.add('falling-item');
       
-      // Случайный эмодзи
       el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-      
-      // Случайная позиция по горизонтали
       el.style.left = Math.random() * 100 + 'vw';
-      
-      // Случайный размер
       el.style.fontSize = (20 + Math.random() * 30) + 'px';
       
-      // Случайная скорость падения (от 3 до 8 секунд)
       const duration = 3 + Math.random() * 5;
       el.style.animationDuration = duration + 's';
-      
-      // Задержка перед началом падения
       el.style.animationDelay = (Math.random() * 5) + 's';
 
-      // Добавляем в документ
-      container.appendChild(el);
+      body.appendChild(el);
 
-      // Удаляем элемент после падения, чтобы не загружать память
       setTimeout(() => {
         el.remove();
       }, (duration + 5) * 1000);
     }
 
-    // Создаем элементы постоянно каждые 300 миллисекунд
     setInterval(createFallingItem, 300);
-    
-    // Сразу создаем первую партию
     for (let i = 0; i < 15; i++) {
       setTimeout(createFallingItem, i * 100);
+    }
+
+    // ====== 2. РАЗМНОЖЕНИЕ ВАШЕЙ КАРТИНКИ PIC ======
+    // ВАЖНО: Убедитесь, что ваша картинка называется pic.png и лежит в корне репозитория
+    const picSource = 'pic.png'; 
+    const TOTAL_PICS = 25; // Количество копий на фоне
+
+    for (let i = 0; i < TOTAL_PICS; i++) {
+      const img = document.createElement('img');
+      img.src = picSource;
+      img.classList.add('floating-pic');
+
+      // Случайный размер от 60 до 150 пикселей
+      const size = 60 + Math.random() * 90;
+      img.style.width = size + 'px';
+
+      // Случайная позиция по всему экрану
+      img.style.left = Math.random() * 95 + 'vw';
+      img.style.top = Math.random() * 95 + 'vh';
+
+      // Случайная скорость плавания (от 6 до 12 секунд)
+      const duration = 6 + Math.random() * 6;
+      img.style.animationDuration = duration + 's';
+      
+      // Случайная задержка, чтобы они не начинали двигаться одновременно
+      img.style.animationDelay = (Math.random() * 5) + 's';
+
+      // Добавляем на страницу
+      body.appendChild(img);
     }
   </script>
 </body>
