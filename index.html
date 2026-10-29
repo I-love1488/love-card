@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Хорошего дня! 💖</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffe0e9, #ffb6c1, #ff69b4);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ================= ПАДАЮЩИЕ ЭЛЕМЕНТЫ ================= */
+    .falling-item {
+      position: absolute;
+      top: -50px;
+      font-size: 30px;
+      animation: fall linear infinite;
+      z-index: 1;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.5; }
+    }
+
+    /* ================= КАРТОЧКА С ТЕКСТОМ ================= */
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      border-radius: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 90%;
+      width: 400px;
+      z-index: 10;
+      position: relative;
+      border: 3px solid #fff;
+    }
+
+    .card h1 {
+      font-size: 28px;
+      line-height: 1.4;
+      font-weight: 800;
+      /* Переливающийся градиент для текста */
+      background: linear-gradient(45deg, #ff1493, #ff8c00, #ff1493, #ff69b4);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textGradient 4s ease infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes textGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .card p {
+      color: #d81b60;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    /* Анимация для сердечка внизу */
+    .heart-beat {
+      display: inline-block;
+      font-size: 40px;
+      margin-top: 20px;
+      animation: beat 1s infinite alternate;
+    }
+
+    @keyframes beat {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Карточка с текстом -->
+  <div class="card">
+    <h1>Хорошего дня, отличного настроения, почаще улыбайся и молись чтобы мне деньги с неба падали</h1>
+    <p>Ты лучшая! ✨</p>
+    <div class="heart-beat">💖</div>
+  </div>
+
+  <script>
+    // Список эмодзи для падения
+    const emojis = ['💸', '💰', '💵', '💖', '✨', '😊', '🥰', '🌸', '🤑'];
+    const container = document.body;
+
+    // Функция создания падающего элемента
+    function createFallingItem() {
+      const el = document.createElement('div');
+      el.classList.add('falling-item');
+      
+      // Случайный эмодзи
+      el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      
+      // Случайная позиция по горизонтали
+      el.style.left = Math.random() * 100 + 'vw';
+      
+      // Случайный размер
+      el.style.fontSize = (20 + Math.random() * 30) + 'px';
+      
+      // Случайная скорость падения (от 3 до 8 секунд)
+      const duration = 3 + Math.random() * 5;
+      el.style.animationDuration = duration + 's';
+      
+      // Задержка перед началом падения
+      el.style.animationDelay = (Math.random() * 5) + 's';
+
+      // Добавляем в документ
+      container.appendChild(el);
+
+      // Удаляем элемент после падения, чтобы не загружать память
+      setTimeout(() => {
+        el.remove();
+      }, (duration + 5) * 1000);
+    }
+
+    // Создаем элементы постоянно каждые 300 миллисекунд
+    setInterval(createFallingItem, 300);
+    
+    // Сразу создаем первую партию
+    for (let i = 0; i < 15; i++) {
+      setTimeout(createFallingItem, i * 100);
+    }
+  </script>
+</body>
+</html>
